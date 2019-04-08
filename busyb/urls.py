@@ -53,7 +53,7 @@ urlpatterns = [
         'tasks/<hashid:task_id>/notes/',
         core_views.get_or_create_task_notes,
         name="get_or_create_task_notes"),
-    path('accounts/', include('registration.backends.simple.urls')),
+    path('accounts/', include('registration.backends.default.urls')),
 ]
 
 if settings.DEBUG:

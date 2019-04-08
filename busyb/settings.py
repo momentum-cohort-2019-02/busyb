@@ -144,5 +144,8 @@ LOGIN_REDIRECT_URL = 'task_list'
 LOGOUT_REDIRECT_URL = 'index'
 REGISTRATION_FORM = 'core.forms.CustomRegistrationForm'
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Configure Django App for Heroku.
 django_heroku.settings(locals())

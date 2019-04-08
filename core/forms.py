@@ -17,7 +17,7 @@ class CustomRegistrationForm(RegistrationForm):
 
     email = forms.EmailField(
         label="E-mail",
-        widget=forms.PasswordInput(attrs={'class': 'w-100 mv2 pa2'}))
+        widget=forms.TextInput(attrs={'class': 'w-100 mv2 pa2'}))
 
     password1 = forms.CharField(
         label="Password",
