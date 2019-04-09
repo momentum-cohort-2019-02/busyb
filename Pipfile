@@ -21,6 +21,7 @@ django-extensions = "*"
 werkzeug = "*"
 pyyaml = ">=4.2b1"
 django-registration-redux = "*"
+django-sendgrid-v5 = "*"
 
 [requires]
 python_version = "3.7"
