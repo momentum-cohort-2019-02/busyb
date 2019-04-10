@@ -1,15 +1,16 @@
 import json
 
 from django.contrib.auth.models import AnonymousUser
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
-from django.shortcuts import get_object_or_404
 
+from api.forms import TaskForm
 from core.models import User
 from core.views import get_task_or_404
-from api.forms import TaskForm
 
 
 def check_user(request):
@@ -83,6 +84,8 @@ class TaskList(APIView):
                             status=400)
 
 
+
+
 class TaskDetail(APIView):
 
     def get(self, request, hashid):
@@ -94,11 +97,20 @@ class TaskDetail(APIView):
 
     def patch(self, request, hashid):
         task = get_task_or_404(request, hashid)
-        if request.data.get('description'):
-            task.description = request.data['description']
-            task.save()
 
-        return JsonResponse({"status": "ok", "data": task.to_dict()})
+        for k, v in model_to_dict(task).items():
+            if k not in request.data: request.data[k] = v
+
+        form = TaskForm(instance=task, data=request.data)
+        if form.is_valid():
+            task = form.save()
+            return JsonResponse({"status": "ok", "data": task.to_dict()})
+
+        return JsonResponse({
+            "status": "error",
+            "errors": form.errors.get_json_data()
+        },
+                            status=400)
 
     def delete(self, request, hashid):
         task = get_task_or_404(request, hashid)
